@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AituConnectApp.Pages.MainPage">
+             x:Class="AituConnectApp.Pages.MainPage"
+             xmlns:viewmodel="clr-namespace:AituConnectApp.ViewModels"
+             x:DataType="viewmodel:MainPageModel">
 
     <ScrollView>
         <VerticalStackLayout
@@ -9,6 +11,7 @@
             Spacing="25">
             <HorizontalStackLayout Spacing="5" Padding="5" HorizontalOptions="End">
                 <Button Text="Sign Up"
+                Command="{Binding SignUpCommand}"
                 VerticalOptions="Start"
                 Margin="5" 
                 BackgroundColor="Transparent"

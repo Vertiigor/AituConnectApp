@@ -1,7 +1,4 @@
-﻿using AituConnectApi.Dto;
-using AituConnectApi.Models;
-using AituConnectApi.Services.Abstractions;
-using AituConnectApi.Services.Implementations;
+﻿using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AituConnectApi.Controllers

@@ -1,12 +1,15 @@
-﻿namespace AituConnectApp.Pages
+﻿using AituConnectApp.ViewModels;
+
+namespace AituConnectApp.Pages
 {
     public partial class MainPage : ContentPage
     {
         int count = 0;
 
-        public MainPage()
+        public MainPage(MainPageModel model)
         {
             InitializeComponent();
+            BindingContext = model;
         }
 
         private void OnCounterClicked(object? sender, EventArgs e)

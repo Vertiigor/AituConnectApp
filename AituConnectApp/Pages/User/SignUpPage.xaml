@@ -2,11 +2,107 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AituConnectApp.Pages.User.SignUpPage"
-             Title="SignUpPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:viewmodel="clr-namespace:AituConnectApp.ViewModels"
+             x:DataType="viewmodel:SignUpPageModel"
+             Title="Sign Up">
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
+                   BackgroundColor="White"
+                   CornerRadius="20"
+                   Padding="30"
+                   WidthRequest="320"
+                   HasShadow="True"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+
+                <VerticalStackLayout Spacing="20"
+                                     HorizontalOptions="Fill"
+                                     VerticalOptions="Center">
+
+                    <!-- App title -->
+                    <Label Text="Aitu Connect"
+                           FontSize="32"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#333"/>
+
+                    <!-- SignIn title -->
+                    <Label Text="Sign Up"
+                           FontSize="30"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#333"/>
+
+                    <!-- Username -->
+                    <Entry Placeholder="Username"
+                           Text="{Binding Username}"
+                           FontSize="16"
+                           BackgroundColor="#F9F9F9"
+                           TextColor="#000"
+                           PlaceholderColor="#888"
+                           HeightRequest="50"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Email -->
+                    <Entry Placeholder="Email"
+                           Text="{Binding Email}"
+                           FontSize="16"
+                           BackgroundColor="#F9F9F9"
+                           TextColor="#000"
+                           PlaceholderColor="#888"
+                           HeightRequest="50"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Password -->
+                    <Entry Placeholder="Password"
+                           Text="{Binding Password}"
+                           IsPassword="{Binding IsPassword}"
+                           FontSize="16"
+                           BackgroundColor="#F9F9F9"
+                           TextColor="#000"
+                           PlaceholderColor="#888"
+                           HeightRequest="50"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <!-- University Picker -->
+                    <Label Text="University" TextColor="#333"/>
+                    <Picker ItemsSource="{Binding Universities}"
+        ItemDisplayBinding="{Binding Name}"
+        SelectedItem="{Binding SelectedUniversity}" />
+
+                    <!-- Major Picker -->
+                    <Label Text="Major" TextColor="#333"/>
+                    <Picker ItemsSource="{Binding Majors}"
+        ItemDisplayBinding="{Binding Name}"
+        SelectedItem="{Binding SelectedMajor}" />
+
+
+                    <!-- Register button -->
+                    <Button Text="Sign Up"
+                            Command="{Binding RegisterCommand}"
+                            BackgroundColor="#FF4500"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            HeightRequest="50"
+                            CornerRadius="10"
+                            HorizontalOptions="FillAndExpand"/>
+                </VerticalStackLayout>
+
+            </Frame>
+        </Grid>
+    </ScrollView>
 </ContentPage>

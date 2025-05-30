@@ -44,7 +44,7 @@ namespace AituConnectApi.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> CreateUser([FromBody] UserDto dto)
+        public async Task<IActionResult> CreateUser([FromBody] SignUpDto dto)
         {
             if (dto == null)
             {
@@ -67,7 +67,7 @@ namespace AituConnectApi.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateUser(string id, [FromBody] UserDto dto)
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] SignUpDto dto)
         {
             if (dto == null)
             {
