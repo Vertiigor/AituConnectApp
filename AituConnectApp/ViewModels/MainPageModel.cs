@@ -56,5 +56,16 @@ namespace AituConnectApp.ViewModels
 
             await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
         }
+
+        [RelayCommand]
+        private async Task LogOut()
+        {
+            SecureStorage.Remove("access_token");
+            SecureStorage.Remove("refresh_token");
+            SecureStorage.Remove("username");
+            IsLoggedIn = false;
+            Username = "Guest";
+            await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+        }
     }
 }

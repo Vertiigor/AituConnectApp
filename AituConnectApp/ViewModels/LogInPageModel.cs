@@ -1,7 +1,6 @@
 ﻿using AituConnectApp.Pages;
 using AituConnectApp.Pages.User;
 using AituConnectApp.Services.Abstractions;
-using AituConnectApp.Services.Implementations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -40,7 +39,7 @@ namespace AituConnectApp.ViewModels
                 return;
             }
 
-            var success = await _userApiService.LignInAsync(new Dto.LoginDto { UserName = Username, Password = Password});
+            var success = await _userApiService.LignInAsync(new Dto.LoginDto { UserName = Username, Password = Password });
 
             if (success)
             {

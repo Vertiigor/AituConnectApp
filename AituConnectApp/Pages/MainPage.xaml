@@ -13,7 +13,13 @@
                 <Label
     Text="{Binding Username, StringFormat='Hello, {0}'}"
     Style="{StaticResource Headline}"
-    SemanticProperties.HeadingLevel="Level1" />
+    SemanticProperties.HeadingLevel="Level1" >
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsLoggedIn}" Value="False">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
 
                 <Button Text="Sign Up"
         Command="{Binding SignUpCommand}"
@@ -37,6 +43,18 @@
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding IsLoggedIn}" Value="True">
                             <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <Button Text="Logout"
+        Command="{Binding LogOutCommand}"
+        VerticalOptions="Start"
+        Margin="5"
+        IsVisible="False">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsLoggedIn}" Value="True">
+                            <Setter Property="IsVisible" Value="True" />
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>

@@ -2,7 +2,6 @@
 using AituConnectApp.Services.Abstractions;
 using AituConnectApp.Settings.Api.AituConnect;
 using Microsoft.Extensions.Options;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace AituConnectApp.Services.Implementations
