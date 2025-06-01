@@ -1,7 +1,6 @@
 ﻿using AituConnectApp.Dto;
 using AituConnectApp.Pages;
 using AituConnectApp.Services.Abstractions;
-using AituConnectApp.Services.Implementations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Text.RegularExpressions;
@@ -31,7 +30,7 @@ namespace AituConnectApp.ViewModels
             Universities = await _universityApiService.GetAllAsync();
             Majors = await _majorApiService.GetAllAsync();
         }
-        
+
         [ObservableProperty]
         private string email;
 

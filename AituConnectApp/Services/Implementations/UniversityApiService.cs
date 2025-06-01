@@ -14,7 +14,6 @@ namespace AituConnectApp.Services.Implementations
 
         public async Task<List<UniversityDto>> GetAllAsync()
         {
-            //throw new Exception($"{_httpClient.BaseAddress}/{_settings.Base}/{_settings.GetAll}");
             return await _httpClient.GetFromJsonAsync<List<UniversityDto>>($"{_settings.UniversitiesEndpoints.Base}/{_settings.UniversitiesEndpoints.GetAll}");
         }
     }

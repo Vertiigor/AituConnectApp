@@ -94,7 +94,7 @@
                     <!-- Register button -->
                     <Button Text="Sign Up"
                             Command="{Binding RegisterCommand}"
-                            BackgroundColor="#FF4500"
+                            BackgroundColor="#20a5e6"
                             TextColor="White"
                             FontAttributes="Bold"
                             HeightRequest="50"

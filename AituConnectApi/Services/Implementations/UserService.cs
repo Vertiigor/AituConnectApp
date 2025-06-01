@@ -12,5 +12,20 @@ namespace AituConnectApi.Services.Implementations
         {
             _userRepository = userRepository;
         }
+
+        public async Task<User> GetByRefreshTokenAsync(string refreshToken)
+        {
+            return await _userRepository.GetByRefreshTokenAsync(refreshToken);
+        }
+
+        public async Task<User> GetByUsernameAsync(string username)
+        {
+            return await _userRepository.GetByUsernameAsync(username);
+        }
+
+        public async Task<bool> VerifyPasswordAsync(User user, string password)
+        {
+            return await _userRepository.VerifyPasswordAsync(user, password);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using AituConnectApp.Services.Abstractions;
 using AituConnectApp.Settings.Api.AituConnect;
 using Microsoft.Extensions.Options;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace AituConnectApp.Services.Implementations
@@ -22,6 +23,32 @@ namespace AituConnectApp.Services.Implementations
             }
 
             return true;
+        }
+
+        public async Task<bool> LignInAsync(LoginDto dto)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.Login}", new LoginDto
+            {
+                UserName = dto.UserName,
+                Password = dto.Password
+            });
+
+            if (response.IsSuccessStatusCode)
+            {
+                var tokenDto = await response.Content.ReadFromJsonAsync<TokenDto>();
+
+                await SecureStorage.SetAsync("access_token", tokenDto.AccessToken);
+                await SecureStorage.SetAsync("refresh_token", tokenDto.RefreshToken);
+
+                return true;
+                // Proceed to the app
+            }
+            else
+            {
+                // Show error
+                return false;
+            }
+
         }
     }
 }

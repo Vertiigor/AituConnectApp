@@ -1,6 +1,7 @@
 ﻿using AituConnectApi.Dto;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -11,11 +12,61 @@ namespace AituConnectApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ITokenService tokenService)
         {
             _userService = userService;
+            _tokenService = tokenService;
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            if (string.IsNullOrWhiteSpace(loginDto.UserName) || string.IsNullOrWhiteSpace(loginDto.Password))
+                return BadRequest("Username and password are required.");
+
+            var user = await _userService.GetByUsernameAsync(loginDto.UserName);
+            if (user == null)
+                return Unauthorized("Invalid credentials.");
+
+            var isPasswordValid = await _userService.VerifyPasswordAsync(user, loginDto.Password);
+            if (!isPasswordValid)
+                return Unauthorized("Invalid credentials.");
+
+            var tokens = await _tokenService.GenerateTokens(user);
+
+            return Ok(tokens);
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshToken([FromBody] TokenDto tokenDto)
+        {
+            if (tokenDto == null || string.IsNullOrEmpty(tokenDto.RefreshToken))
+            {
+                return BadRequest("Invalid token data.");
+            }
+            // Logic to validate the refresh token and generate new tokens
+            var user = await _tokenService.ValidateRefreshTokenAsync(tokenDto.RefreshToken);
+
+            if (user == null)
+            {
+                return Unauthorized("Invalid refresh token.");
+            }
+
+            var principal = _tokenService.GetPrincipalFromExpiredToken(tokenDto.AccessToken);
+            var userId = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (userId != user.Id)
+            {
+                return Unauthorized("Access token and refresh token mismatch.");
+            }
+
+            var newTokens = await _tokenService.GenerateTokens(user);
+
+            return Ok(newTokens);
+        }
+
 
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAllUsers()

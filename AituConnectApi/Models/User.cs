@@ -20,6 +20,9 @@ namespace AituConnectApi.Models
         [Required]
         public List<Post> Posts { get; set; } = new List<Post>();
 
+        public string RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
+
         [Required]
         public DateTime JoinedDate { get; set; }
     }

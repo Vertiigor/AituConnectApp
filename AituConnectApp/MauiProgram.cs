@@ -1,5 +1,6 @@
 ﻿using AituConnectApp.Pages;
 using AituConnectApp.Pages.User;
+using AituConnectApp.Services;
 using AituConnectApp.Services.Abstractions;
 using AituConnectApp.Services.Implementations;
 using AituConnectApp.Settings.Api.AituConnect;
@@ -37,16 +38,11 @@ namespace AituConnectApp
             var settings = config.GetRequiredSection("AituConnectApi").Get<ApiSettings>();
 
             builder.Services.Configure<ApiSettings>(config.GetRequiredSection("AituConnectApi"));
-            //builder.Services.Configure<UsersEndpointsSettings>(config.GetRequiredSection("AituConnectApi:UsersEndpoints"));
-            //builder.Services.Configure<UniversitiesEndpointsSettings>(config.GetRequiredSection("AituConnectApi:UniversitiesEndpoints"));
-            //builder.Services.Configure<MajorsEndpointsSettings>(config.GetRequiredSection("AituConnectApi:MajorsEndpoints"));
 
+            builder.Services.AddTransient<AuthenticatedHttpClientHandler>();
 
-            builder.Services.AddHttpClient<ApiService>();
-            //builder.Services.AddHttpClient<ApiService>(client =>
-            //{
-            //    client.BaseAddress = new Uri(settings.BaseUrl);
-            //});
+            builder.Services.AddHttpClient<ApiService>()
+                .AddHttpMessageHandler<AuthenticatedHttpClientHandler>();
 
             builder.Services.AddScoped<IUserApiService, UserApiService>();
             builder.Services.AddScoped<IUniversityApiService, UniversityApiService>();
@@ -57,6 +53,9 @@ namespace AituConnectApp
 
             builder.Services.AddSingleton<SignUpPage>();
             builder.Services.AddSingleton<SignUpPageModel>();
+
+            builder.Services.AddSingleton<LoginPage>();
+            builder.Services.AddSingleton<LogInPageModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

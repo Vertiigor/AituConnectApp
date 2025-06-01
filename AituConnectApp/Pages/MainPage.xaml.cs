@@ -12,6 +12,16 @@ namespace AituConnectApp.Pages
             BindingContext = model;
         }
 
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            if (BindingContext is MainPageModel vm)
+            {
+                await vm.CheckLoginStatusAsync();
+                await vm.LoadUsernameAsync();
+            }
+        }
+
         private void OnCounterClicked(object? sender, EventArgs e)
         {
             count++;
