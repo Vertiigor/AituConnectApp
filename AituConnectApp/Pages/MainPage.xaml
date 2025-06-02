@@ -11,9 +11,9 @@
             Spacing="25">
             <HorizontalStackLayout Spacing="5" Padding="5" HorizontalOptions="End">
                 <Label
-    Text="{Binding Username, StringFormat='Hello, {0}'}"
-    Style="{StaticResource Headline}"
-    SemanticProperties.HeadingLevel="Level1" >
+                    Text="{Binding Username, StringFormat='Hello, {0}'}"
+                    Style="{StaticResource Headline}"
+                    SemanticProperties.HeadingLevel="Level1" >
                     <Label.Triggers>
                         <DataTrigger TargetType="Label" Binding="{Binding IsLoggedIn}" Value="False">
                             <Setter Property="IsVisible" Value="False" />
@@ -22,13 +22,13 @@
                 </Label>
 
                 <Button Text="Sign Up"
-        Command="{Binding SignUpCommand}"
-        VerticalOptions="Start"
-        Margin="5" 
-        BackgroundColor="Transparent"
-        BorderColor="#20a5e6"
-        TextColor="#20a5e6"
-        BorderWidth="1">
+                    Command="{Binding SignUpCommand}"
+                    VerticalOptions="Start"
+                    Margin="5" 
+                    BackgroundColor="Transparent"
+                    BorderColor="#20a5e6"
+                    TextColor="#20a5e6"
+                    BorderWidth="1">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding IsLoggedIn}" Value="True">
                             <Setter Property="IsVisible" Value="False" />
@@ -37,9 +37,9 @@
                 </Button>
 
                 <Button Text="Login"
-        Command="{Binding LogInCommand}"
-        VerticalOptions="Start"
-        Margin="5">
+                    Command="{Binding LogInCommand}"
+                    VerticalOptions="Start"
+                    Margin="5">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding IsLoggedIn}" Value="True">
                             <Setter Property="IsVisible" Value="False" />
@@ -48,10 +48,10 @@
                 </Button>
 
                 <Button Text="Logout"
-        Command="{Binding LogOutCommand}"
-        VerticalOptions="Start"
-        Margin="5"
-        IsVisible="False">
+                    Command="{Binding LogOutCommand}"
+                    VerticalOptions="Start"
+                    Margin="5"
+                    IsVisible="False">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding IsLoggedIn}" Value="True">
                             <Setter Property="IsVisible" Value="True" />

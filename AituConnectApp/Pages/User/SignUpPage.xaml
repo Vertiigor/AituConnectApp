@@ -81,14 +81,14 @@
                     <!-- University Picker -->
                     <Label Text="University" TextColor="#333"/>
                     <Picker ItemsSource="{Binding Universities}"
-        ItemDisplayBinding="{Binding Name}"
-        SelectedItem="{Binding SelectedUniversity}" />
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedUniversity}" />
 
                     <!-- Major Picker -->
                     <Label Text="Major" TextColor="#333"/>
                     <Picker ItemsSource="{Binding Majors}"
-        ItemDisplayBinding="{Binding Name}"
-        SelectedItem="{Binding SelectedMajor}" />
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedMajor}" />
 
 
                     <!-- Register button -->
