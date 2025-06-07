@@ -39,10 +39,10 @@ namespace AituConnectApp
 
             builder.Services.Configure<ApiSettings>(config.GetRequiredSection("AituConnectApi"));
 
-            builder.Services.AddTransient<AuthenticatedHttpClientHandler>();
+            builder.Services.AddTransient<AuthentificatedHttpClientHandler>();
 
-            builder.Services.AddHttpClient<ApiService>()
-                .AddHttpMessageHandler<AuthenticatedHttpClientHandler>();
+            builder.Services.AddHttpClient("ApiClient")
+                .AddHttpMessageHandler<AuthentificatedHttpClientHandler>();
 
             builder.Services.AddScoped<IUserApiService, UserApiService>();
             builder.Services.AddScoped<IUniversityApiService, UniversityApiService>();

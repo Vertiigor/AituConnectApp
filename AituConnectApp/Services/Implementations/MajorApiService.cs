@@ -9,7 +9,7 @@ namespace AituConnectApp.Services.Implementations
     public class MajorApiService : ApiService, IMajorApiService
     {
 
-        public MajorApiService(HttpClient client, IOptions<ApiSettings> settings) : base(client, settings)
+        public MajorApiService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> settings) : base(httpClientFactory, settings)
         {
         }
 

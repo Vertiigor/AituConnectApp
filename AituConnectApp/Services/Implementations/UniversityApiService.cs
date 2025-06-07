@@ -8,7 +8,7 @@ namespace AituConnectApp.Services.Implementations
 {
     public class UniversityApiService : ApiService, IUniversityApiService
     {
-        public UniversityApiService(HttpClient client, IOptions<ApiSettings> settings) : base(client, settings)
+        public UniversityApiService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> settings) : base(httpClientFactory, settings)
         {
         }
 

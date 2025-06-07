@@ -1,18 +1,19 @@
 ﻿using AituConnectApp.Dto;
 using AituConnectApp.Settings.Api.AituConnect;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace AituConnectApp.Services
 {
-    public class AuthenticatedHttpClientHandler : DelegatingHandler
+    public class AuthentificatedHttpClientHandler : DelegatingHandler
     {
         protected readonly ApiSettings _settings;
 
-        public AuthenticatedHttpClientHandler(ApiSettings settings)
+        public AuthentificatedHttpClientHandler(IOptions<ApiSettings> settings)
         {
-            _settings = settings;
+            _settings = settings.Value;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

@@ -8,7 +8,7 @@ namespace AituConnectApp.Services.Implementations
 {
     public class UserApiService : ApiService, IUserApiService
     {
-        public UserApiService(HttpClient client, IOptions<ApiSettings> settings) : base(client, settings)
+        public UserApiService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> settings) : base(httpClientFactory, settings)
         {
         }
 
