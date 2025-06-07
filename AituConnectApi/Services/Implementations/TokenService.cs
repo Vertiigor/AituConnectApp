@@ -1,4 +1,4 @@
-﻿using AituConnectApi.Dto;
+﻿using AituConnectApi.Dto.Requests;
 using AituConnectApi.Models;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.IdentityModel.Tokens;
@@ -20,7 +20,7 @@ namespace AituConnectApi.Services.Implementations
             _userService = userService;
         }
 
-        public async Task<TokenDto> GenerateTokens(User user)
+        public async Task<TokenRequestDto> GenerateTokens(User user)
         {
             // Create JWT token
             var accessToken = GenerateAccessToken(user.Id, user.UserName);
@@ -33,7 +33,7 @@ namespace AituConnectApi.Services.Implementations
             // Save refresh token to DB
             await _userService.UpdateAsync(user);
 
-            return new TokenDto
+            return new TokenRequestDto
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken

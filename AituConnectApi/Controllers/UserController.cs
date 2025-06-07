@@ -1,7 +1,10 @@
-﻿using AituConnectApi.Dto;
+﻿using AituConnectApi.Dto.Requests;
+using AituConnectApi.Dto.Responses;
 using AituConnectApi.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -21,7 +24,7 @@ namespace AituConnectApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginDto)
         {
             if (string.IsNullOrWhiteSpace(loginDto.UserName) || string.IsNullOrWhiteSpace(loginDto.Password))
                 return BadRequest("Username and password are required.");
@@ -40,7 +43,7 @@ namespace AituConnectApi.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> RefreshToken([FromBody] TokenDto tokenDto)
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequestDto tokenDto)
         {
             if (tokenDto == null || string.IsNullOrEmpty(tokenDto.RefreshToken))
             {
@@ -81,6 +84,34 @@ namespace AituConnectApi.Controllers
             return Ok(users);
         }
 
+        [Authorize]
+        [HttpGet("profile-info")]
+        public async Task<IActionResult> GetProfileInfo()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Start");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine($"ID: {userId}");
+
+            Console.ResetColor();
+
+            if (userId == null) return Unauthorized();
+
+            var user = await _userService.GetByIdAsync(userId);
+
+            if (user == null) return NotFound();
+
+            Console.WriteLine($"Name: {user.UserName}");
+            Console.WriteLine($"Email: {user.Email}");
+
+            var dto = new ProfileResponseDto
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+            };
+            return Ok(dto);
+        }
+
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetUserById(string id)
         {
@@ -95,7 +126,7 @@ namespace AituConnectApi.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> CreateUser([FromBody] SignUpDto dto)
+        public async Task<IActionResult> CreateUser([FromBody] SignUpRequestDto dto)
         {
             if (dto == null)
             {
@@ -118,7 +149,7 @@ namespace AituConnectApi.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateUser(string id, [FromBody] SignUpDto dto)
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] SignUpRequestDto dto)
         {
             if (dto == null)
             {

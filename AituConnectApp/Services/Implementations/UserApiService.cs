@@ -24,7 +24,12 @@ namespace AituConnectApp.Services.Implementations
             return true;
         }
 
-        public async Task<bool> LignInAsync(LoginDto dto)
+        public async Task<ProfileResponseDto> GetProfileInfo()
+        {
+            return await _httpClient.GetFromJsonAsync<ProfileResponseDto>($"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.ProfileInfo}");
+        }
+
+        public async Task<bool> LogInAsync(LoginDto dto)
         {
             var response = await _httpClient.PostAsJsonAsync($"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.Login}", new LoginDto
             {

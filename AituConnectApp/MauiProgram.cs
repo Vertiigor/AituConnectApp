@@ -57,6 +57,9 @@ namespace AituConnectApp
             builder.Services.AddSingleton<LoginPage>();
             builder.Services.AddSingleton<LogInPageModel>();
 
+            builder.Services.AddSingleton<ProfilePage>();
+            builder.Services.AddSingleton<ProfilePageModel>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

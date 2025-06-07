@@ -13,12 +13,17 @@
                 <Label
                     Text="{Binding Username, StringFormat='Hello, {0}'}"
                     Style="{StaticResource Headline}"
+                    TextColor="#20a5e6"
                     SemanticProperties.HeadingLevel="Level1" >
                     <Label.Triggers>
                         <DataTrigger TargetType="Label" Binding="{Binding IsLoggedIn}" Value="False">
                             <Setter Property="IsVisible" Value="False" />
                         </DataTrigger>
                     </Label.Triggers>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding ProfileCommand}" />
+                    </Label.GestureRecognizers>
                 </Label>
 
                 <Button Text="Sign Up"

@@ -1,6 +1,6 @@
-﻿namespace AituConnectApi.Dto
+﻿namespace AituConnectApi.Dto.Requests
 {
-    public class TokenDto
+    public class TokenRequestDto
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }

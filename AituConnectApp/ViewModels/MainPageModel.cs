@@ -49,12 +49,13 @@ namespace AituConnectApp.ViewModels
         [RelayCommand]
         private async Task LogIn()
         {
-            var accessToken = await SecureStorage.GetAsync("access_token");
-            var refreshToken = await SecureStorage.GetAsync("refresh_token");
-
-            await Shell.Current.DisplayAlert("Error", $"access: {accessToken}\trefresh: {refreshToken}", "OK");
-
             await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+        }
+
+        [RelayCommand]
+        private async Task Profile()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ProfilePage)}");
         }
 
         [RelayCommand]

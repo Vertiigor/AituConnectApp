@@ -30,6 +30,16 @@ namespace AituConnectApi
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
             builder.Services.AddAuthentication(options =>

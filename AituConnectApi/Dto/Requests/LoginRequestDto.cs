@@ -1,6 +1,6 @@
-﻿namespace AituConnectApi.Dto
+﻿namespace AituConnectApi.Dto.Requests
 {
-    public class LoginDto
+    public class LoginRequestDto
     {
         public string UserName { get; set; }
         public string Password { get; set; }
