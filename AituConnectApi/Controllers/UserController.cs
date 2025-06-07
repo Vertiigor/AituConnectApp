@@ -140,7 +140,9 @@ namespace AituConnectApi.Controllers
                 Email = dto.Email,
                 PasswordHash = ComputeSha256Hash(dto.Password),
                 UniversityId = dto.UniversityId,
-                MajorId = dto.MajorId
+                MajorId = dto.MajorId,
+                RefreshToken = string.Empty,
+                RefreshTokenExpiryTime = DateTime.UtcNow
             };
 
             await _userService.AddAsync(user);
