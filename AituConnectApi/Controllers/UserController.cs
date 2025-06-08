@@ -39,9 +39,12 @@ namespace AituConnectApi.Controllers
 
             var tokens = await _tokenService.GenerateTokens(user);
 
+            
+
             return Ok(tokens);
         }
 
+        [AllowAnonymous]
         [HttpPost("refresh")]
         public async Task<IActionResult> RefreshToken([FromBody] TokenRequestDto tokenDto)
         {
@@ -49,6 +52,8 @@ namespace AituConnectApi.Controllers
             {
                 return BadRequest("Invalid token data.");
             }
+
+//            throw new Exception($"Failed to get profile.");
             // Logic to validate the refresh token and generate new tokens
             var user = await _tokenService.ValidateRefreshTokenAsync(tokenDto.RefreshToken);
 
@@ -58,7 +63,8 @@ namespace AituConnectApi.Controllers
             }
 
             var principal = _tokenService.GetPrincipalFromExpiredToken(tokenDto.AccessToken);
-            var userId = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            var userId = principal.Claims.First().Value;
 
             if (userId != user.Id)
             {
@@ -84,8 +90,8 @@ namespace AituConnectApi.Controllers
             return Ok(users);
         }
 
-        [Authorize]
         [HttpGet("profile-info")]
+        [Authorize]
         public async Task<IActionResult> GetProfileInfo()
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -95,7 +101,7 @@ namespace AituConnectApi.Controllers
 
             Console.ResetColor();
 
-            if (userId == null) return Unauthorized();
+            if (userId == null) return Unauthorized("AAAAAAAAAAAAAAAA");
 
             var user = await _userService.GetByIdAsync(userId);
 

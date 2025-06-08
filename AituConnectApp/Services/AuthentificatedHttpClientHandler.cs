@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Windows;
 
 namespace AituConnectApp.Services
 {
@@ -29,6 +30,7 @@ namespace AituConnectApp.Services
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 var refreshed = await TryRefreshTokenAsync();
+
                 if (refreshed)
                 {
                     token = await SecureStorage.GetAsync("access_token");
@@ -38,9 +40,12 @@ namespace AituConnectApp.Services
                 }
             }
 
+            await Clipboard.SetTextAsync(token);
+
+
             return response;
         }
-
+        
         private async Task<bool> TryRefreshTokenAsync()
         {
             var accessToken = await SecureStorage.GetAsync("access_token");
@@ -53,7 +58,7 @@ namespace AituConnectApp.Services
             };
 
             using var client = new HttpClient();
-            var response = await client.PostAsJsonAsync($"{_settings.BaseUrl}/{_settings.UsersEndpoints.RefreshToken}", refreshDto);
+            var response = await client.PostAsJsonAsync($"{_settings.BaseUrl}{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.RefreshToken}", refreshDto);
 
             if (!response.IsSuccessStatusCode) return false;
 
