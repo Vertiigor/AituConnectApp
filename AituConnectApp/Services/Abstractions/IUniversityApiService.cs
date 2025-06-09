@@ -4,6 +4,6 @@ namespace AituConnectApp.Services.Abstractions
 {
     public interface IUniversityApiService
     {
-        public Task<List<UniversityDto>> GetAllAsync();
+        public Task<List<UniversityResponseDto>> GetAllAsync();
     }
 }

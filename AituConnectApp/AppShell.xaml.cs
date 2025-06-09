@@ -1,4 +1,5 @@
 ﻿using AituConnectApp.Pages;
+using AituConnectApp.Pages.Post;
 using AituConnectApp.Pages.User;
 
 namespace AituConnectApp
@@ -10,9 +11,10 @@ namespace AituConnectApp
             InitializeComponent();
 
             Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
-            Routing.RegisterRoute(nameof(SignUpPage), typeof(SignUpPage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(SignUpPage), typeof(SignUpPage));
             Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+            Routing.RegisterRoute(nameof(CreatePostPage), typeof(CreatePostPage));
         }
     }
 }

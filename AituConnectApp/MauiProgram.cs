@@ -1,4 +1,5 @@
 ﻿using AituConnectApp.Pages;
+using AituConnectApp.Pages.Post;
 using AituConnectApp.Pages.User;
 using AituConnectApp.Services;
 using AituConnectApp.Services.Abstractions;
@@ -47,6 +48,7 @@ namespace AituConnectApp
             builder.Services.AddScoped<IUserApiService, UserApiService>();
             builder.Services.AddScoped<IUniversityApiService, UniversityApiService>();
             builder.Services.AddScoped<IMajorApiService, MajorApiService>();
+            builder.Services.AddScoped<ISubjectApiService, SubjectApiService>();
 
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainPageModel>();
@@ -59,6 +61,9 @@ namespace AituConnectApp
 
             builder.Services.AddSingleton<ProfilePage>();
             builder.Services.AddSingleton<ProfilePageModel>();
+
+            builder.Services.AddSingleton<CreatePostPage>();
+            builder.Services.AddSingleton<CreatePostPageModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

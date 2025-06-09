@@ -1,4 +1,5 @@
-﻿using AituConnectApi.Services.Abstractions;
+﻿using AituConnectApi.Dto.Responses;
+using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AituConnectApi.Controllers
@@ -24,10 +25,11 @@ namespace AituConnectApi.Controllers
                 return NotFound();
             }
 
-            return Ok(
-                from university in universities
-                select new { university.Id, university.Name }
-                );
+            List<UniversityResponseDto> dtoList = universities
+                .Select(u => new UniversityResponseDto { Id = u.Id, Name = u.Name })
+                .ToList();
+
+            return Ok(dtoList);
         }
     }
 }

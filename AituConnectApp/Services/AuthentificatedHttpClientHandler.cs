@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Windows;
 
 namespace AituConnectApp.Services
 {
@@ -45,7 +44,7 @@ namespace AituConnectApp.Services
 
             return response;
         }
-        
+
         private async Task<bool> TryRefreshTokenAsync()
         {
             var accessToken = await SecureStorage.GetAsync("access_token");
@@ -62,7 +61,7 @@ namespace AituConnectApp.Services
 
             if (!response.IsSuccessStatusCode) return false;
 
-            var tokenResult = await response.Content.ReadFromJsonAsync<TokenDto>();
+            var tokenResult = await response.Content.ReadFromJsonAsync<TokenResponseDto>();
 
             await SecureStorage.SetAsync("access_token", tokenResult.AccessToken);
             await SecureStorage.SetAsync("refresh_token", tokenResult.RefreshToken);

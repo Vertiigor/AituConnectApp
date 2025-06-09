@@ -12,9 +12,9 @@ namespace AituConnectApp.Services.Implementations
         {
         }
 
-        public async Task<List<UniversityDto>> GetAllAsync()
+        public async Task<List<UniversityResponseDto>> GetAllAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<UniversityDto>>($"{_settings.UniversitiesEndpoints.Base}/{_settings.UniversitiesEndpoints.GetAll}");
+            return await _httpClient.GetFromJsonAsync<List<UniversityResponseDto>>($"{_settings.UniversitiesEndpoints.Base}/{_settings.UniversitiesEndpoints.GetAll}");
         }
     }
 }

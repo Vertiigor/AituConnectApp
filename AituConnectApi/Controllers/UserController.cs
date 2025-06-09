@@ -3,7 +3,6 @@ using AituConnectApi.Dto.Responses;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -39,8 +38,6 @@ namespace AituConnectApi.Controllers
 
             var tokens = await _tokenService.GenerateTokens(user);
 
-            
-
             return Ok(tokens);
         }
 
@@ -53,7 +50,6 @@ namespace AituConnectApi.Controllers
                 return BadRequest("Invalid token data.");
             }
 
-//            throw new Exception($"Failed to get profile.");
             // Logic to validate the refresh token and generate new tokens
             var user = await _tokenService.ValidateRefreshTokenAsync(tokenDto.RefreshToken);
 

@@ -13,9 +13,9 @@ namespace AituConnectApp.Services.Implementations
         {
         }
 
-        public async Task<List<MajorDto>> GetAllAsync()
+        public async Task<List<MajorResponseDto>> GetAllAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<MajorDto>>($"{_settings.MajorsEndpoints.Base}/{_settings.MajorsEndpoints.GetAll}");
+            return await _httpClient.GetFromJsonAsync<List<MajorResponseDto>>($"{_settings.MajorsEndpoints.Base}/{_settings.MajorsEndpoints.GetAll}");
         }
     }
 }

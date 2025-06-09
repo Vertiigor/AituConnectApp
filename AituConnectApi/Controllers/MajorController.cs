@@ -1,4 +1,5 @@
-﻿using AituConnectApi.Services.Abstractions;
+﻿using AituConnectApi.Dto.Responses;
+using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AituConnectApi.Controllers
@@ -24,10 +25,11 @@ namespace AituConnectApi.Controllers
                 return NotFound();
             }
 
-            return Ok(
-                from major in majors
-                select new { major.Id, major.Name }
-                );
+            List<MajorResponseDto> dtoList = majors
+                .Select(m => new MajorResponseDto { Id = m.Id, Name = m.Name })
+                .ToList();
+
+            return Ok(dtoList);
         }
 
     }

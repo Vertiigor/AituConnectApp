@@ -1,4 +1,4 @@
-﻿namespace AituConnectApp.Dto
+﻿namespace AituConnectApi.Dto.Responses
 {
     public class UniversityResponseDto
     {

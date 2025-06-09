@@ -10,6 +10,17 @@
             Padding="30,0"
             Spacing="25">
             <HorizontalStackLayout Spacing="5" Padding="5" HorizontalOptions="End">
+                <Button Text="Create Post"
+                    Command="{Binding CreatePostCommand}"
+                    VerticalOptions="Start"
+                    Margin="5"
+                    IsVisible="False">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsLoggedIn}" Value="True">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
                 <Label
                     Text="{Binding Username, StringFormat='Hello, {0}'}"
                     Style="{StaticResource Headline}"

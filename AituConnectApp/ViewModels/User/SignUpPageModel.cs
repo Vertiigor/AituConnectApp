@@ -47,16 +47,16 @@ namespace AituConnectApp.ViewModels
         private bool isPassword = true;
 
         [ObservableProperty]
-        private List<UniversityDto> universities;
+        private List<UniversityResponseDto> universities;
 
         [ObservableProperty]
-        private List<MajorDto> majors;
+        private List<MajorResponseDto> majors;
 
         [ObservableProperty]
-        private UniversityDto selectedUniversity;
+        private UniversityResponseDto selectedUniversity;
 
         [ObservableProperty]
-        private MajorDto selectedMajor;
+        private MajorResponseDto selectedMajor;
 
         partial void OnShowPasswordChanged(bool value)
         {
@@ -80,7 +80,7 @@ namespace AituConnectApp.ViewModels
                 return;
             }
 
-            SignUpDto user = new SignUpDto()
+            SignUpRequestDto user = new SignUpRequestDto()
             {
                 UserName = Username,
                 Password = Password,

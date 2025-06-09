@@ -1,6 +1,5 @@
 ﻿using AituConnectApp.Settings.Api.AituConnect;
 using Microsoft.Extensions.Options;
-using System.Net.Http;
 
 namespace AituConnectApp.Services.Abstractions
 {

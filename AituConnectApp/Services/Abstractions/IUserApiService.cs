@@ -4,8 +4,8 @@ namespace AituConnectApp.Services.Abstractions
 {
     public interface IUserApiService
     {
-        public Task<bool> CreateAsync(SignUpDto user);
-        public Task<bool> LogInAsync(LoginDto dto);
+        public Task<bool> CreateAsync(SignUpRequestDto user);
+        public Task<bool> LogInAsync(LoginRequestDto dto);
         public Task<ProfileResponseDto> GetProfileInfo();
     }
 }

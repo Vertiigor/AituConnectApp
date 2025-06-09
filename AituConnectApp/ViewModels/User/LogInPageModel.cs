@@ -39,7 +39,7 @@ namespace AituConnectApp.ViewModels
                 return;
             }
 
-            var success = await _userApiService.LogInAsync(new Dto.LoginDto { UserName = Username, Password = Password });
+            var success = await _userApiService.LogInAsync(new Dto.LoginRequestDto { UserName = Username, Password = Password });
 
             if (success)
             {

@@ -12,9 +12,9 @@ namespace AituConnectApp.Services.Implementations
         {
         }
 
-        public async Task<bool> CreateAsync(SignUpDto user)
+        public async Task<bool> CreateAsync(SignUpRequestDto user)
         {
-            var response = await _httpClient.PostAsJsonAsync<SignUpDto>($"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.Add}", user);
+            var response = await _httpClient.PostAsJsonAsync<SignUpRequestDto>($"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.Add}", user);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -41,9 +41,9 @@ namespace AituConnectApp.Services.Implementations
             return await _httpClient.GetFromJsonAsync<ProfileResponseDto>($"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.ProfileInfo}");
         }
 
-        public async Task<bool> LogInAsync(LoginDto dto)
+        public async Task<bool> LogInAsync(LoginRequestDto dto)
         {
-            var response = await _httpClient.PostAsJsonAsync($"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.Login}", new LoginDto
+            var response = await _httpClient.PostAsJsonAsync($"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.Login}", new LoginRequestDto
             {
                 UserName = dto.UserName,
                 Password = dto.Password
@@ -51,7 +51,7 @@ namespace AituConnectApp.Services.Implementations
 
             if (response.IsSuccessStatusCode)
             {
-                var tokenDto = await response.Content.ReadFromJsonAsync<TokenDto>();
+                var tokenDto = await response.Content.ReadFromJsonAsync<TokenResponseDto>();
 
                 await SecureStorage.SetAsync("access_token", tokenDto.AccessToken);
                 await SecureStorage.SetAsync("refresh_token", tokenDto.RefreshToken);
