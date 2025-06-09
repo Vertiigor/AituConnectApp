@@ -1,9 +1,11 @@
+using AituConnectApi.Connections.Redis;
 using AituConnectApi.Data;
 using AituConnectApi.Models;
 using AituConnectApi.Repositories.Abstractions;
 using AituConnectApi.Repositories.Implementations;
 using AituConnectApi.Services.Abstractions;
 using AituConnectApi.Services.Implementations;
+using AituConnectApi.Settings.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -62,6 +64,9 @@ namespace AituConnectApi
                 };
             });
 
+            builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("Redis"));
+            builder.Services.AddSingleton<IRedisConnection, RedisConnection>();
+
             builder.Services.AddAuthorization();
 
             // Register repositories
@@ -78,6 +83,8 @@ namespace AituConnectApi
             builder.Services.AddScoped<IMajorService, MajorService>();
             builder.Services.AddScoped<IUniversityService, UniversityService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+
+            builder.Services.AddScoped<ICacheService, CacheService>();
 
             builder.Services.AddControllers();
 

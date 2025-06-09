@@ -1,5 +1,6 @@
 ﻿using AituConnectApi.Dto.Requests;
 using AituConnectApi.Dto.Responses;
+using AituConnectApi.Models.Redis;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,13 @@ namespace AituConnectApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
+        private readonly ICacheService _cacheService;
 
-        public UserController(IUserService userService, ITokenService tokenService)
+        public UserController(IUserService userService, ITokenService tokenService, ICacheService cacheService)
         {
             _userService = userService;
             _tokenService = tokenService;
+            _cacheService = cacheService;
         }
 
         [HttpPost("login")]
@@ -37,6 +40,20 @@ namespace AituConnectApi.Controllers
                 return Unauthorized("Invalid credentials.");
 
             var tokens = await _tokenService.GenerateTokens(user);
+
+            var cache = new Cache<UserCache>
+            {
+                Key = user.Id,
+                Payload = new UserCache
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    UniversityId = user.UniversityId,
+                    MajorId = user.MajorId
+                }
+            };
+
+            await _cacheService.SetAsync(cache);
 
             return Ok(tokens);
         }
@@ -69,6 +86,20 @@ namespace AituConnectApi.Controllers
 
             var newTokens = await _tokenService.GenerateTokens(user);
 
+            var cache = new Cache<UserCache>
+            {
+                Key = user.Id,
+                Payload = new UserCache
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    UniversityId = user.UniversityId,
+                    MajorId = user.MajorId
+                }
+            };
+
+            await _cacheService.SetAsync(cache);
+
             return Ok(newTokens);
         }
 
@@ -91,25 +122,21 @@ namespace AituConnectApi.Controllers
         public async Task<IActionResult> GetProfileInfo()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Start");
+
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
             Console.WriteLine($"ID: {userId}");
 
             Console.ResetColor();
 
-            if (userId == null) return Unauthorized("AAAAAAAAAAAAAAAA");
+            if (userId == null) return Unauthorized();
 
-            var user = await _userService.GetByIdAsync(userId);
-
-            if (user == null) return NotFound();
-
-            Console.WriteLine($"Name: {user.UserName}");
-            Console.WriteLine($"Email: {user.Email}");
+            var cache = await _cacheService.GetAsync<UserCache>(userId);
 
             var dto = new ProfileResponseDto
             {
-                UserName = user.UserName,
-                Email = user.Email,
+                UserName = cache.Username,
+                Email = cache.Email,
             };
             return Ok(dto);
         }

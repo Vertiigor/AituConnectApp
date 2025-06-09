@@ -82,12 +82,12 @@
                                             FontSize="14"/>
 
                                         <ImageButton Source="close.png"
-                                 HeightRequest="20"
-                                 WidthRequest="20"
-                                 CommandParameter="{Binding .}"
-                                 Clicked="OnRemoveSubjectClicked"
-                                 BackgroundColor="Transparent"
-                                 Padding="0"/>
+                                            HeightRequest="20"
+                                            WidthRequest="20"
+                                            CommandParameter="{Binding .}"
+                                            Clicked="OnRemoveSubjectClicked"
+                                            BackgroundColor="Transparent"
+                                            Padding="0"/>
                                     </HorizontalStackLayout>
                                 </Frame>
                             </DataTemplate>
