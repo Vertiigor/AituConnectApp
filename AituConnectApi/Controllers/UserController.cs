@@ -41,19 +41,7 @@ namespace AituConnectApi.Controllers
 
             var tokens = await _tokenService.GenerateTokens(user);
 
-            var cache = new Cache<UserCache>
-            {
-                Key = user.Id,
-                Payload = new UserCache
-                {
-                    Username = user.UserName,
-                    Email = user.Email,
-                    UniversityId = user.UniversityId,
-                    MajorId = user.MajorId
-                }
-            };
-
-            await _cacheService.SetAsync(cache);
+            await SetCache(user);
 
             return Ok(tokens);
         }
@@ -86,23 +74,10 @@ namespace AituConnectApi.Controllers
 
             var newTokens = await _tokenService.GenerateTokens(user);
 
-            var cache = new Cache<UserCache>
-            {
-                Key = user.Id,
-                Payload = new UserCache
-                {
-                    Username = user.UserName,
-                    Email = user.Email,
-                    UniversityId = user.UniversityId,
-                    MajorId = user.MajorId
-                }
-            };
-
-            await _cacheService.SetAsync(cache);
+            await SetCache(user);
 
             return Ok(newTokens);
         }
-
 
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAllUsers()
@@ -138,6 +113,7 @@ namespace AituConnectApi.Controllers
                 UserName = cache.Username,
                 Email = cache.Email,
             };
+
             return Ok(dto);
         }
 
@@ -230,6 +206,23 @@ namespace AituConnectApi.Controllers
                 }
                 return builder.ToString();
             }
+        }
+
+        private async Task SetCache(Models.User user)
+        {
+            var cache = new Cache<UserCache>
+            {
+                Key = user.Id,
+                Payload = new UserCache
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    UniversityId = user.UniversityId,
+                    MajorId = user.MajorId
+                }
+            };
+
+            await _cacheService.SetAsync(cache);
         }
     }
 }

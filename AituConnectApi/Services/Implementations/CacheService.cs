@@ -37,7 +37,7 @@ namespace AituConnectApi.Services.Implementations
 
             var json = JsonSerializer.Serialize(cache.Payload);
 
-            await db.StringSetAsync(cache.Key, json, TimeSpan.FromHours(1));
+            await db.StringSetAsync(cache.Key, json, TimeSpan.FromHours(0.25));
         }
 
         public async Task RemoveAsync(string key)
