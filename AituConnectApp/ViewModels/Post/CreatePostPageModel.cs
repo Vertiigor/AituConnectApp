@@ -1,4 +1,6 @@
-﻿using AituConnectApp.Dto.Responses;
+﻿using AituConnectApp.Dto.Requests;
+using AituConnectApp.Dto.Responses;
+using AituConnectApp.Pages;
 using AituConnectApp.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -15,12 +17,51 @@ namespace AituConnectApp.ViewModels
         [ObservableProperty]
         private ObservableCollection<SubjectResponseDto> selectedSubjects;
 
-        private readonly ISubjectApiService _subjectApiService; // Assuming you have a service to fetch subjects
+        [ObservableProperty]
+        private string title;
 
-        public CreatePostPageModel(ISubjectApiService subjectApiService)
+        [ObservableProperty]
+        private string content;
+
+        private readonly ISubjectApiService _subjectApiService;
+        private readonly IPostApiService _postApiService;
+
+        public CreatePostPageModel(ISubjectApiService subjectApiService, IPostApiService postApiService)
         {
             _subjectApiService = subjectApiService;
+            _postApiService = postApiService;
             SelectedSubjects = new ObservableCollection<SubjectResponseDto>();
+        }
+
+        [RelayCommand]
+        private async Task Create()
+        {
+            if (selectedSubjects == null || !selectedSubjects.Any())
+            {
+                await Shell.Current.DisplayAlert("Error", "Select at least on subject", "OK");
+                return;
+            }
+
+            var dto = new CreatePostRequestDto
+            {
+                Title = title,
+                Content = content,
+                Subjects = selectedSubjects.Select(s => s.Id).ToList()
+            };
+
+            bool success = await _postApiService.CreateAsync(dto);
+
+            if (success)
+            {
+#if DEBUG
+                await Shell.Current.DisplayAlert("Success", "Post has been created!", "ОК");
+#endif
+                await Shell.Current.GoToAsync($"///{nameof(MainPage)}");
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Error", "Something went wrong...", "OK");
+            }
         }
 
         public void AddSubject(SubjectResponseDto subject)

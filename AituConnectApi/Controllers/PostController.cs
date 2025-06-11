@@ -1,45 +1,57 @@
-﻿//using AituConnectApi.Dto.Requests;
-//using AituConnectApi.Services.Abstractions;
-//using AituConnectApi.Services.Implementations;
-//using Microsoft.AspNetCore.Mvc;
+﻿using AituConnectApi.Dto.Requests;
+using AituConnectApi.Models;
+using AituConnectApi.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
-//namespace AituConnectApi.Controllers
-//{
-//    [ApiController]
-//    [Route("api/posts")]
-//    public class PostController : ControllerBase
-//    {
-//        private readonly IPostService _postService;
+namespace AituConnectApi.Controllers
+{
+    [ApiController]
+    [Route("api/posts")]
+    public class PostController : ControllerBase
+    {
+        private readonly IPostService _postService;
+        private readonly ICacheService _cacheService;
+        private readonly ISubjectService _subjectService;
 
-//        public PostController(IPostService postService)
-//        {
-//            _postService = postService;
-//        }
+        public PostController(IPostService postService, ICacheService cacheService, ISubjectService subjectService)
+        {
+            _postService = postService;
+            _cacheService = cacheService;
+            _subjectService = subjectService;
+        }
 
-//        [HttpPost("add")]
-//        public async Task<IActionResult> CreatePost([FromBody] CreatePostRequestDto dto)
-//        {
-//            if (dto == null)
-//            {
-//                return BadRequest();
-//            }
+        [HttpPost("add")]
+        [Authorize]
+        public async Task<IActionResult> CreatePost([FromBody] CreatePostRequestDto dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest();
+            }
 
-//            var user = new Models.User
-//            {
-//                Id = Guid.NewGuid().ToString(),
-//                UserName = dto.UserName,
-//                Email = dto.Email,
-//                PasswordHash = ComputeSha256Hash(dto.Password),
-//                UniversityId = dto.UniversityId,
-//                MajorId = dto.MajorId,
-//                RefreshToken = string.Empty,
-//                RefreshTokenExpiryTime = DateTime.UtcNow
-//            };
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-//            await _userService.AddAsync(user);
+            var user = await _cacheService.GetAsync<User>(userId);
 
-//            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
-//        }
+            var subjects = await _subjectService.GetSubjectsByIds(dto.Subjects);
 
-//    }
-//}
+            var post = new Post
+            {
+                Id = Guid.NewGuid().ToString(),
+                OwnerId = userId,
+                Title = dto.Title,
+                Content = dto.Content,
+                UniversityId = user.UniversityId,
+                Subjects = subjects,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _postService.AddAsync(post);
+
+            return Ok();
+        }
+
+    }
+}

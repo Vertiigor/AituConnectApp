@@ -26,18 +26,6 @@ namespace AituConnectApp.Services.Implementations
 
         public async Task<ProfileResponseDto> GetProfileInfo()
         {
-            //var request = new HttpRequestMessage(HttpMethod.Get, $"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.ProfileInfo}");
-            //var response = await _httpClient.SendAsync(request);
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    return await response.Content.ReadFromJsonAsync<ProfileResponseDto>();
-            //}
-            //else
-            //{
-            //    throw new Exception($"Failed to get profile.");
-            //}
-
             return await _httpClient.GetFromJsonAsync<ProfileResponseDto>($"{_settings.UsersEndpoints.Base}/{_settings.UsersEndpoints.ProfileInfo}");
         }
 

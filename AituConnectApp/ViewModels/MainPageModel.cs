@@ -74,7 +74,7 @@ namespace AituConnectApp.ViewModels
 
             IsLoggedIn = false;
             Username = "Guest";
-            
+
             await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
         }
     }

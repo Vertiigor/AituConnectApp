@@ -7,5 +7,6 @@
         public UniversitiesEndpointsSettings UniversitiesEndpoints { get; set; }
         public MajorsEndpointsSettings MajorsEndpoints { get; set; }
         public SubjectsEndpointsSettings SubjectsEndpoints { get; set; }
+        public PostsEndpointsSettings PostsEndpoints { get; set; }
     }
 }

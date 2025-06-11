@@ -49,6 +49,7 @@ namespace AituConnectApp
             builder.Services.AddScoped<IUniversityApiService, UniversityApiService>();
             builder.Services.AddScoped<IMajorApiService, MajorApiService>();
             builder.Services.AddScoped<ISubjectApiService, SubjectApiService>();
+            builder.Services.AddScoped<IPostApiService, PostApiService>();
 
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainPageModel>();

@@ -19,7 +19,7 @@ namespace AituConnectApi.Services.Implementations
         {
             var db = await GetDatabase();
 
-            var json = await db.StringGetAsync(key) ;
+            var json = await db.StringGetAsync(key);
 
             return json.IsNullOrEmpty ? null : JsonSerializer.Deserialize<T>(json!);
         }

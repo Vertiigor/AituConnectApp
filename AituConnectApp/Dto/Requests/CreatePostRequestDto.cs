@@ -1,4 +1,4 @@
-﻿namespace AituConnectApi.Dto.Requests
+﻿namespace AituConnectApp.Dto.Requests
 {
     public class CreatePostRequestDto
     {

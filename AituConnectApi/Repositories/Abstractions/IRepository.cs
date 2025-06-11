@@ -7,6 +7,7 @@
         public Task AddAsync(T entity);
         public Task UpdateAsync(T entity);
         public Task DeleteAsync(string id);
+        public IQueryable<T> GetAllAsQueryable();
     }
 
 }
