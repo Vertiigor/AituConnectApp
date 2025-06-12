@@ -19,19 +19,8 @@ namespace AituConnectApp.Pages
             {
                 await vm.CheckLoginStatusAsync();
                 await vm.LoadUsernameAsync();
+                await vm.LoadData(); // Load posts when the page appears
             }
-        }
-
-        private void OnCounterClicked(object? sender, EventArgs e)
-        {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
         }
     }
 }

@@ -2,6 +2,7 @@
 using AituConnectApi.Dto.Responses;
 using AituConnectApi.Extensions;
 using AituConnectApi.Models;
+using AituConnectApi.Models.Redis;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,8 @@ namespace AituConnectApi.Controllers
             _subjectService = subjectService;
         }
 
-        [HttpPost("add")]
         [Authorize]
+        [HttpPost("add")]
         public async Task<IActionResult> CreatePost([FromBody] CreatePostRequestDto dto)
         {
             if (dto == null)
@@ -35,7 +36,7 @@ namespace AituConnectApi.Controllers
 
             var userId = this.GetUserId();
 
-            var user = await _cacheService.GetAsync<User>(userId);
+            var user = await _cacheService.GetAsync<UserCache>(userId);
 
             var subjects = await _subjectService.GetSubjectsByIds(dto.Subjects);
 
@@ -55,13 +56,13 @@ namespace AituConnectApi.Controllers
             return Ok();
         }
 
-        [HttpGet("get-all-by-university")]
         [Authorize]
+        [HttpGet("get-all-by-university")]
         public async Task<IActionResult> GetAllPostsByUniversity()
         {
             var userId = this.GetUserId();
 
-            var user = await _cacheService.GetAsync<User>(userId);
+            var user = await _cacheService.GetAsync<UserCache>(userId);
 
             if (user == null)
             {

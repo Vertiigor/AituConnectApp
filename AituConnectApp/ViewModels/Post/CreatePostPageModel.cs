@@ -87,7 +87,7 @@ namespace AituConnectApp.ViewModels
 
         private async Task LoadData()
         {
-            var subjects = await _subjectApiService.GetAllAsync(); // Assuming you have a service to fetch subjects
+            var subjects = await _subjectApiService.GetAllAsync();
 
             AllSubjects.Clear();
 

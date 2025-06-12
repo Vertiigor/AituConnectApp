@@ -14,7 +14,8 @@ namespace AituConnectApp.ViewModels
 
         private readonly IPostApiService _postApiService;
 
-        public ObservableCollection<PostDetailsResponseDto> Posts { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<PostDetailsResponseDto> posts;
 
         public MainPageModel(IPostApiService postApiService)
         {
@@ -26,9 +27,10 @@ namespace AituConnectApp.ViewModels
             await LoadData(); // ✅ called after navigation
         }
 
-        private async Task LoadData()
+        public async Task LoadData()
         {
-            Posts = new ObservableCollection<PostDetailsResponseDto>(await _postApiService.GetAllByUniversityAsync());
+            var dto = await _postApiService.GetAllByUniversityAsync();
+            Posts = new ObservableCollection<PostDetailsResponseDto>(dto);
         }
 
         public string Username
