@@ -56,13 +56,14 @@
                        HeightRequest="50"
                        HorizontalOptions="FillAndExpand"/>
 
-                    <Entry Placeholder="Content"
+                    <Editor Placeholder="Content"
                        Text="{Binding Content}"
                        FontSize="16"
                        BackgroundColor="#F9F9F9"
                        TextColor="#000"
                        PlaceholderColor="#888"
-                       HeightRequest="50"
+                       AutoSize="TextChanges"
+                       HeightRequest="200"
                        HorizontalOptions="FillAndExpand"/>
 
                     <!-- Subject Picker -->
