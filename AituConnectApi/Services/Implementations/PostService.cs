@@ -1,6 +1,7 @@
 ﻿using AituConnectApi.Models;
 using AituConnectApi.Repositories.Abstractions;
 using AituConnectApi.Services.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace AituConnectApi.Services.Implementations
 {
@@ -15,14 +16,12 @@ namespace AituConnectApi.Services.Implementations
 
         public async Task<IEnumerable<Post>> GetAllByUniversity(string university)
         {
-            return await _postRepository.GetAllByUniversity(university);
-        }
-
-        public async Task<IEnumerable<Post>> GetAllByOwnerId(string userId)
-        {
-            var userPosts = await _postRepository.GetAllByOwnerId(userId);
-
-            return userPosts;
+            return await _postRepository.GetAllAsQueryable()
+                .Where(p => p.UniversityId == university)
+                .Include(p => p.User)
+                .Include(p => p.Subjects)
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
         }
     }
 }

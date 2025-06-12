@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AituConnectApp.Pages.MainPage"
              xmlns:viewmodel="clr-namespace:AituConnectApp.ViewModels"
+             xmlns:dto="clr-namespace:AituConnectApp.Dto.Responses"
              x:DataType="viewmodel:MainPageModel">
 
     <ScrollView>

@@ -1,4 +1,5 @@
 ﻿using AituConnectApp.Dto.Requests;
+using AituConnectApp.Dto.Responses;
 using AituConnectApp.Services.Abstractions;
 using AituConnectApp.Settings.Api.AituConnect;
 using Microsoft.Extensions.Options;
@@ -22,6 +23,11 @@ namespace AituConnectApp.Services.Implementations
             }
 
             return true;
+        }
+
+        public async Task<List<PostDetailsResponseDto>> GetAllByUniversityAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<PostDetailsResponseDto>>($"{_settings.PostsEndpoints.Base}/{_settings.PostsEndpoints.GetAllByUniversity}");
         }
     }
 }

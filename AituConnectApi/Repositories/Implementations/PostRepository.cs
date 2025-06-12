@@ -22,12 +22,12 @@ namespace AituConnectApi.Repositories.Implementations
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Post>> GetAllByOwnerId(string userId)
+        public async Task<IQueryable<Post>> GetAllByOwnerId(string userId)
         {
-            return await GetAllWithIncludes()
+            return GetAllWithIncludes()
                 .Where(p => p.OwnerId == userId)
-                .OrderByDescending(p => p.CreatedAt)
-                .ToListAsync();
+                .OrderByDescending(p => p.CreatedAt);
+                //.ToListAsync();
         }
 
         public IQueryable<Post> GetAllWithIncludes()

@@ -1,4 +1,5 @@
 ﻿using AituConnectApi.Dto.Requests;
+using AituConnectApi.Dto.Responses;
 using AituConnectApi.Extensions;
 using AituConnectApi.Models;
 using AituConnectApi.Services.Abstractions;
@@ -54,5 +55,37 @@ namespace AituConnectApi.Controllers
             return Ok();
         }
 
+        [HttpGet("get-all-by-university")]
+        [Authorize]
+        public async Task<IActionResult> GetAllPostsByUniversity()
+        {
+            var userId = this.GetUserId();
+
+            var user = await _cacheService.GetAsync<User>(userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var posts = await _postService.GetAllByUniversity(user.UniversityId);
+
+            if (posts == null || !posts.Any())
+            {
+                return NotFound();
+            }
+
+            var dto = posts.Select(p => new PostDetailsResponseDto
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Content = p.Content,
+                CreatedAt = p.CreatedAt,
+                Subjects = p.Subjects.Select(s => s.Name).ToList(),
+                OwnerName = p.User?.UserName ?? "Unknown"
+            }).ToList();
+
+            return Ok(dto);
+        }
     }
 }

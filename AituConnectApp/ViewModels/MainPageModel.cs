@@ -1,20 +1,36 @@
-﻿using AituConnectApp.Pages.Post;
+﻿using AituConnectApp.Dto.Responses;
+using AituConnectApp.Pages.Post;
 using AituConnectApp.Pages.User;
+using AituConnectApp.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 
 namespace AituConnectApp.ViewModels
 {
-    public partial class MainPageModel : ObservableObject
+    public partial class MainPageModel : ObservableObject, IQueryAttributable
     {
-
-        //[RelayCommand]
-        //private async Task Login()
-        //{
-        //    await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
-        //}
-
         private string _username;
+
+        private readonly IPostApiService _postApiService;
+
+        public ObservableCollection<PostDetailsResponseDto> Posts { get; set; }
+
+        public MainPageModel(IPostApiService postApiService)
+        {
+            _postApiService = postApiService;
+        }
+
+        public async void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            await LoadData(); // ✅ called after navigation
+        }
+
+        private async Task LoadData()
+        {
+            Posts = new ObservableCollection<PostDetailsResponseDto>(await _postApiService.GetAllByUniversityAsync());
+        }
+
         public string Username
         {
             get => _username;
