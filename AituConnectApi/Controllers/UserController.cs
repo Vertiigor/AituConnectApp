@@ -1,5 +1,6 @@
 ﻿using AituConnectApi.Dto.Requests;
 using AituConnectApi.Dto.Responses;
+using AituConnectApi.Extensions;
 using AituConnectApi.Models.Redis;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -32,10 +33,12 @@ namespace AituConnectApi.Controllers
                 return BadRequest("Username and password are required.");
 
             var user = await _userService.GetByUsernameAsync(loginDto.UserName);
+            
             if (user == null)
                 return Unauthorized("Invalid credentials.");
 
             var isPasswordValid = await _userService.VerifyPasswordAsync(user, loginDto.Password);
+            
             if (!isPasswordValid)
                 return Unauthorized("Invalid credentials.");
 
@@ -63,9 +66,7 @@ namespace AituConnectApi.Controllers
                 return Unauthorized("Invalid refresh token.");
             }
 
-            var principal = _tokenService.GetPrincipalFromExpiredToken(tokenDto.AccessToken);
-
-            var userId = principal.Claims.First().Value;
+            var userId = this.GetUserIdFromExpiredToken(_tokenService, tokenDto.AccessToken);
 
             if (userId != user.Id)
             {
@@ -98,7 +99,7 @@ namespace AituConnectApi.Controllers
         {
             Console.ForegroundColor = ConsoleColor.Green;
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = this.GetUserId();
 
             Console.WriteLine($"ID: {userId}");
 

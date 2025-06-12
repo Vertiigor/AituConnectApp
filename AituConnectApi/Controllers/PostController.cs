@@ -1,4 +1,5 @@
 ﻿using AituConnectApi.Dto.Requests;
+using AituConnectApi.Extensions;
 using AituConnectApi.Models;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +32,7 @@ namespace AituConnectApi.Controllers
                 return BadRequest();
             }
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = this.GetUserId();
 
             var user = await _cacheService.GetAsync<User>(userId);
 
