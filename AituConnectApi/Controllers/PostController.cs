@@ -88,5 +88,29 @@ namespace AituConnectApi.Controllers
 
             return Ok(dto);
         }
+
+        [HttpGet("get/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetPostById(string id)
+        {
+            var post = await _postService.GetByIdAsync(id);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+            
+            var dto = new PostDetailsResponseDto
+            {
+                Id = post.Id,
+                Title = post.Title,
+                Content = post.Content,
+                CreatedAt = post.CreatedAt,
+                Subjects = post.Subjects.Select(s => s.Name).ToList(),
+                OwnerName = post.User?.UserName ?? "Unknown"
+            };
+
+            return Ok(dto);
+        }
     }
 }

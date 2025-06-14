@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AituConnectApp.Pages.Post.PostDetailsPage"
+             xmlns:viewmodel="clr-namespace:AituConnectApp.ViewModels"
+             xmlns:dto="clr-namespace:AituConnectApp.Dto.Responses"
+             x:DataType="viewmodel:PostDetailsPageModel"
+             Title="PostDetailsPage"
+             BackgroundColor="#f9f9f9">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Title -->
+            <Label Text="{Binding Post.Title}"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="#222" />
+
+            <!-- Owner -->
+            <Label Text="{Binding Post.OwnerName, StringFormat='Author: {0}'}"
+                   FontSize="16"
+                   TextColor="#555" />
+
+            <!-- Subjects -->
+            <Label Text="{Binding Post.SubjectsString, StringFormat='Subjects: {0}'}"
+                   FontSize="14"
+                   TextColor="#777" />
+
+            <!-- Created At -->
+            <Label Text="{Binding Post.CreatedAt, StringFormat='Published: {0:MMMM dd, yyyy HH:mm}'}"
+                   FontSize="13"
+                   TextColor="#999" />
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" Color="#ccc" Margin="0,10" />
+
+            <!-- Content -->
+            <Label Text="{Binding Post.Content}"
+                   FontSize="16"
+                   TextColor="#333"
+                   LineBreakMode="WordWrap" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

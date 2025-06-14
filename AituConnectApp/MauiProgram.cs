@@ -66,6 +66,9 @@ namespace AituConnectApp
             builder.Services.AddSingleton<CreatePostPage>();
             builder.Services.AddSingleton<CreatePostPageModel>();
 
+            builder.Services.AddSingleton<PostDetailsPage>();
+            builder.Services.AddSingleton<PostDetailsPageModel>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

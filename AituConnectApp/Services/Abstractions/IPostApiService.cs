@@ -7,5 +7,6 @@ namespace AituConnectApp.Services.Abstractions
     {
         public Task<bool> CreateAsync(CreatePostRequestDto dto);
         public Task<List<PostDetailsResponseDto>> GetAllByUniversityAsync();
+        public Task<PostDetailsResponseDto> GetByIdAsync(string id);
     }
 }

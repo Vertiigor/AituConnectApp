@@ -15,6 +15,7 @@ namespace AituConnectApp
             Routing.RegisterRoute(nameof(SignUpPage), typeof(SignUpPage));
             Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
             Routing.RegisterRoute(nameof(CreatePostPage), typeof(CreatePostPage));
+            Routing.RegisterRoute(nameof(PostDetailsPage), typeof(PostDetailsPage));
         }
     }
 }

@@ -60,6 +60,13 @@ namespace AituConnectApp.ViewModels
         }
 
         [RelayCommand]
+        private async Task OpenPostDetails(string postId)
+        {
+            await Shell.Current.GoToAsync($"///postdetails?id={postId}");
+        }
+
+
+        [RelayCommand]
         private async Task SignUp()
         {
             await Shell.Current.GoToAsync($"{nameof(SignUpPage)}");

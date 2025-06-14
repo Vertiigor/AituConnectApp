@@ -30,6 +30,12 @@ namespace AituConnectApi.Repositories.Implementations
                 //.ToListAsync();
         }
 
+        public override async Task<Post> GetByIdAsync(string id)
+        {
+            return await GetAllWithIncludes()
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
         public IQueryable<Post> GetAllWithIncludes()
         {
             return GetAllAsQueryable()

@@ -27,8 +27,12 @@ namespace AituConnectApp.Services.Implementations
 
         public async Task<List<PostDetailsResponseDto>> GetAllByUniversityAsync()
         {
-//            throw new Exception($"{_settings.PostsEndpoints.Base}/{_settings.PostsEndpoints.GetAllByUniversity}");
             return await _httpClient.GetFromJsonAsync<List<PostDetailsResponseDto>>($"{_settings.PostsEndpoints.Base}/{_settings.PostsEndpoints.GetAllByUniversity}");
+        }
+
+        public async Task<PostDetailsResponseDto> GetByIdAsync(string id)
+        {
+            return await _httpClient.GetFromJsonAsync<PostDetailsResponseDto>($"{_settings.PostsEndpoints.Base}/{_settings.PostsEndpoints.GetById}/{id}");
         }
     }
 }
