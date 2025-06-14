@@ -75,6 +75,7 @@ namespace AituConnectApi
             builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
             builder.Services.AddScoped<IMajorRepository, MajorRepository>();
             builder.Services.AddScoped<IUniversityRepository, UniversityRepository>();
+            builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
             // Register services
             builder.Services.AddScoped<IUserService, UserService>();
@@ -83,6 +84,7 @@ namespace AituConnectApi
             builder.Services.AddScoped<IMajorService, MajorService>();
             builder.Services.AddScoped<IUniversityService, UniversityService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
 
             builder.Services.AddScoped<ICacheService, CacheService>();
 

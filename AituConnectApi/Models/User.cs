@@ -18,8 +18,9 @@ namespace AituConnectApi.Models
         [Required]
         public string MajorId { get; set; }
 
-        [Required]
         public List<Post> Posts { get; set; } = new List<Post>();
+
+        public List<Comment> Comments { get; set; } = new List<Comment>();
 
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }

@@ -6,7 +6,6 @@ using AituConnectApi.Models.Redis;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace AituConnectApi.Controllers
 {
@@ -99,7 +98,7 @@ namespace AituConnectApi.Controllers
             {
                 return NotFound();
             }
-            
+
             var dto = new PostDetailsResponseDto
             {
                 Id = post.Id,
@@ -107,6 +106,12 @@ namespace AituConnectApi.Controllers
                 Content = post.Content,
                 CreatedAt = post.CreatedAt,
                 Subjects = post.Subjects.Select(s => s.Name).ToList(),
+                Comments = post.Comments.Select(c => new CommentResponseDto
+                {
+                    Content = c.Content,
+                    CreatedAt = c.CreatedAt,
+                    Username = c.User?.UserName ?? "Unknown"
+                }).ToList(),
                 OwnerName = post.User?.UserName ?? "Unknown"
             };
 

@@ -41,6 +41,48 @@
                    TextColor="#333"
                    LineBreakMode="WordWrap" />
 
+            <!-- Comment Input -->
+            <Label Text="Add a comment:" FontAttributes="Bold" FontSize="14" TextColor="#444" />
+            <Editor Placeholder="Write your comment here..."
+                    AutoSize="TextChanges"
+                    Text="{Binding NewCommentText}"
+                    BackgroundColor="#fff"
+                    HeightRequest="100"
+                    Margin="0,5"
+                    TextColor="#222" />
+
+            <!-- Submit Button -->
+            <Button Text="Comment"
+                    Command="{Binding SubmitCommentCommand}"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="45"
+                    Margin="0,10,0,0" />
+
+            <CollectionView ItemsSource="{Binding Comments}"
+                SelectionMode="None"
+                Margin="10">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:CommentResponseDto">
+                        <Frame Margin="0,5"
+                            Padding="10"
+                            CornerRadius="12"
+                            BackgroundColor="#ffffff"
+                            HasShadow="True">
+
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="{Binding Username}" FontSize="14" TextColor="#666" />
+                                <Label Text="{Binding Content}" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                                <Label Text="{Binding CreatedAt, StringFormat='Created: {0:MMM dd, yyyy}'}" FontSize="12" TextColor="#aaa" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
         </VerticalStackLayout>
     </ScrollView>
 

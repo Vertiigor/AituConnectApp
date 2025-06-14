@@ -10,6 +10,7 @@ namespace AituConnectApi.Data
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Major> Majors { get; set; }
         public DbSet<University> Universities { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
@@ -57,6 +58,18 @@ namespace AituConnectApi.Data
                 .HasOne(u => u.Major)
                 .WithMany(u => u.Users)
                 .HasForeignKey(u => u.MajorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.Post)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

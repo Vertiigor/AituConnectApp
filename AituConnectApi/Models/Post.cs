@@ -28,6 +28,8 @@ namespace AituConnectApi.Models
         [Required]
         public List<Subject> Subjects { get; set; }
 
+        public List<Comment> Comments { get; set; } = new List<Comment>();
+
         [Required]
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

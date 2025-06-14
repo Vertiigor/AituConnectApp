@@ -27,7 +27,7 @@ namespace AituConnectApi.Repositories.Implementations
             return GetAllWithIncludes()
                 .Where(p => p.OwnerId == userId)
                 .OrderByDescending(p => p.CreatedAt);
-                //.ToListAsync();
+            //.ToListAsync();
         }
 
         public override async Task<Post> GetByIdAsync(string id)
@@ -40,7 +40,8 @@ namespace AituConnectApi.Repositories.Implementations
         {
             return GetAllAsQueryable()
                 .Include(p => p.User)
-                .Include(p => p.Subjects);
+                .Include(p => p.Subjects)
+                .Include(p => p.Comments);
         }
     }
 }

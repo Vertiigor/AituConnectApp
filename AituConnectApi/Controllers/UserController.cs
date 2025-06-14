@@ -5,7 +5,6 @@ using AituConnectApi.Models.Redis;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -33,12 +32,12 @@ namespace AituConnectApi.Controllers
                 return BadRequest("Username and password are required.");
 
             var user = await _userService.GetByUsernameAsync(loginDto.UserName);
-            
+
             if (user == null)
                 return Unauthorized("Invalid credentials.");
 
             var isPasswordValid = await _userService.VerifyPasswordAsync(user, loginDto.Password);
-            
+
             if (!isPasswordValid)
                 return Unauthorized("Invalid credentials.");
 
