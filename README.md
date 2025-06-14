@@ -14,7 +14,7 @@ This project is designed to help university students at Astana IT University (AI
 - ✅ **Secure Token Storage** (via `SecureStorage`)
 - ✅ **Profile Management**
 - ✅ **Blazing-fast Redis Caching** (API-side)
-- 🚧 **More features coming soon**: Likes, Comments, Friend connections
+- 🚧 **More features coming soon**: Likes, Friend connections
 
 ---
 
