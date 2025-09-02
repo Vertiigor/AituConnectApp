@@ -4,6 +4,7 @@ using AituConnectApp.Services.Abstractions;
 using AituConnectApp.Settings.Api.AituConnect;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace AituConnectApp.Services.Implementations
 {
@@ -27,8 +28,28 @@ namespace AituConnectApp.Services.Implementations
 
         public async Task<List<PostDetailsResponseDto>> GetAllByUniversityAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<PostDetailsResponseDto>>($"{_settings.PostsEndpoints.Base}/{_settings.PostsEndpoints.GetAllByUniversity}");
+            var response = await _httpClient.GetAsync(
+                $"{_settings.PostsEndpoints.Base}/{_settings.PostsEndpoints.GetAllByUniversity}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<PostDetailsResponseDto>>(content, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new List<PostDetailsResponseDto>();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                // No posts for this university → return empty list instead of crashing
+                return new List<PostDetailsResponseDto>();
+            }
+            else
+            {
+                throw new Exception($"Error fetching posts: {response.StatusCode}");
+            }
         }
+
 
         public async Task<PostDetailsResponseDto> GetByIdAsync(string id)
         {

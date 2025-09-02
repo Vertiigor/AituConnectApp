@@ -107,6 +107,14 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            
+            <!-- Show when there are no posts -->
+            <Label Text="No posts found for this university."
+                IsVisible="{Binding IsEmpty}"
+                HorizontalOptions="Center"
+                VerticalOptions="CenterAndExpand"
+                FontSize="16"
+                TextColor="Gray"/>
 
         </VerticalStackLayout>
     </ScrollView>

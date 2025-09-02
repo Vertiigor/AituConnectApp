@@ -17,6 +17,8 @@ namespace AituConnectApp.ViewModels
         [ObservableProperty]
         private ObservableCollection<PostDetailsResponseDto> posts;
 
+        public bool IsEmpty => Posts == null || !Posts.Any();
+
         public MainPageModel(IPostApiService postApiService)
         {
             _postApiService = postApiService;
@@ -29,8 +31,11 @@ namespace AituConnectApp.ViewModels
 
         public async Task LoadData()
         {
-            var dto = await _postApiService.GetAllByUniversityAsync();
-            Posts = new ObservableCollection<PostDetailsResponseDto>(dto);
+            if (IsLoggedIn)
+            {
+                var dto = await _postApiService.GetAllByUniversityAsync();
+                Posts = new ObservableCollection<PostDetailsResponseDto>(dto);
+            }
         }
 
         public string Username

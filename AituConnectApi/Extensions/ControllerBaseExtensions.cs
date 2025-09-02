@@ -6,7 +6,7 @@ namespace AituConnectApi.Extensions
 {
     public static class ControllerBaseExtensions
     {
-        public static string GetUserId(this ControllerBase controller)
+        public static string? GetUserId(this ControllerBase controller)
         {
             return controller.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
