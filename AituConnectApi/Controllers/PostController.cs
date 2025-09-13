@@ -95,9 +95,31 @@ namespace AituConnectApi.Controllers
             var post = await _postService.GetByIdAsync(id);
 
             if (post == null)
-            {
                 return NotFound();
+
+            // Build tree
+            var commentLookup = post.Comments
+                .Select(c => new CommentResponseDto
+                {
+                    Id = c.Id,
+                    Content = c.Content,
+                    CreatedAt = c.CreatedAt,
+                    Username = c.User?.UserName ?? "Unknown"
+                })
+                .ToDictionary(c => c.Id);
+
+            foreach (var comment in post.Comments)
+            {
+                if (comment.ParentId != null && commentLookup.ContainsKey(comment.ParentId))
+                {
+                    commentLookup[comment.ParentId].Replies.Add(commentLookup[comment.Id]);
+                }
             }
+
+            // Take only root comments (without parent)
+            var rootComments = commentLookup.Values
+                .Where(c => !post.Comments.Any(pc => pc.Id == c.Id && pc.ParentId != null))
+                .ToList();
 
             var dto = new PostDetailsResponseDto
             {
@@ -106,12 +128,7 @@ namespace AituConnectApi.Controllers
                 Content = post.Content,
                 CreatedAt = post.CreatedAt,
                 Subjects = post.Subjects.Select(s => s.Name).ToList(),
-                Comments = post.Comments.Select(c => new CommentResponseDto
-                {
-                    Content = c.Content,
-                    CreatedAt = c.CreatedAt,
-                    Username = c.User?.UserName ?? "Unknown"
-                }).ToList(),
+                Comments = rootComments,
                 OwnerName = post.User?.UserName ?? "Unknown"
             };
 

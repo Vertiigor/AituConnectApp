@@ -47,5 +47,36 @@ namespace AituConnectApi.Controllers
 
             return Ok();
         }
+
+        [HttpPost("reply")]
+        [Authorize]
+        public async Task<IActionResult> ReplyToComment([FromBody] ReplyCommentRequestDto dto)
+        {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Content) || string.IsNullOrWhiteSpace(dto.PostId) || string.IsNullOrWhiteSpace(dto.ParentCommentId))
+            {
+                return BadRequest("Invalid reply data.");
+            }
+            
+            var userId = this.GetUserId();
+            
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+            
+            var reply = new Comment
+            {
+                Id = Guid.NewGuid().ToString(),
+                PostId = dto.PostId,
+                UserId = userId,
+                ParentId = dto.ParentCommentId,
+                Content = dto.Content,
+                CreatedAt = DateTime.UtcNow
+            };
+            
+            await _commentService.AddAsync(reply);
+            
+            return Ok();
+        }
     }
 }

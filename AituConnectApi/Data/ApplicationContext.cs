@@ -75,7 +75,7 @@ namespace AituConnectApi.Data
             builder.Entity<Comment>()
                 .HasOne(c => c.ParentComment)
                 .WithMany()
-                .HasForeignKey(c => c.CommentId)
+                .HasForeignKey(c => c.ParentId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
