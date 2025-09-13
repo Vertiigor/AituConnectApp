@@ -2,6 +2,10 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AituConnectApp"
+             xmlns:dto="clr-namespace:AituConnectApp.Dto.Responses"
+             xmlns:viewmodel="clr-namespace:AituConnectApp.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:behaviors="clr-namespace:AituConnectApp.Behaviors"
              x:Class="AituConnectApp.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -9,6 +13,49 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <local:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
+            <local:RepliesToHeightConverter x:Key="RepliesToHeightConverter" />
+            <DataTemplate x:Key="CommentTemplate" x:DataType="dto:CommentResponseDto">
+                <Frame Margin="0,4"
+           Padding="10"
+           CornerRadius="10"
+           BackgroundColor="{DynamicResource SurfaceVariant}">
+                    <VerticalStackLayout Spacing="4">
+                        <!-- Main comment -->
+                        <Label Text="{Binding Username}"
+                   FontAttributes="Bold"
+                   FontSize="14" />
+
+                        <Label Text="{Binding Content}"
+                   FontSize="14"
+                   LineBreakMode="WordWrap" />
+
+                        <Label Text="{Binding CreatedAt, StringFormat='{0:MMM dd, yyyy HH:mm}'}"
+                   FontSize="11"
+                   TextColor="Gray" />
+
+                        <!-- Reply button -->
+                        <Button Text="Reply"
+                    WidthRequest="80"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    FontSize="12"
+                    Padding="4,2"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:PostDetailsPageModel}}, Path=ReplyCommand}"
+                    CommandParameter="{Binding Id}" />
+
+                        <!-- Nested replies -->
+                        <CollectionView ItemsSource="{Binding Replies}"
+                            ItemTemplate="{StaticResource CommentTemplate}"
+                            ItemsLayout="VerticalList"
+                            SelectionMode="None"
+                            Margin="20,0,0,0"
+                            IsVisible="{Binding Replies.Count, Converter={StaticResource GreaterThanZeroConverter}}" />
+                    </VerticalStackLayout>
+                </Frame>
+            </DataTemplate>
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

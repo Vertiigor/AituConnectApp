@@ -9,6 +9,7 @@ using AituConnectApp.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
+using CommunityToolkit.Maui;
 
 namespace AituConnectApp
 {
@@ -19,6 +20,7 @@ namespace AituConnectApp
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

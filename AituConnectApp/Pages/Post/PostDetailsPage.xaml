@@ -9,81 +9,52 @@
              BackgroundColor="#f9f9f9">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+            <VerticalStackLayout Padding="16" Spacing="16">
 
-            <!-- Title -->
-            <Label Text="{Binding Post.Title}"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   TextColor="#222" />
+                <!-- Post Details -->
+                <Frame CornerRadius="12" Padding="12" BackgroundColor="{DynamicResource SecondaryContainer}">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="{Binding Post.Title}"
+                               FontSize="20"
+                               FontAttributes="Bold" />
 
-            <!-- Owner -->
-            <Label Text="{Binding Post.OwnerName, StringFormat='Author: {0}'}"
-                   FontSize="16"
-                   TextColor="#555" />
+                        <Label Text="{Binding Post.OwnerName}"
+                               FontSize="14"
+                               TextColor="Gray" />
 
-            <!-- Subjects -->
-            <Label Text="{Binding Post.SubjectsString, StringFormat='Subjects: {0}'}"
-                   FontSize="14"
-                   TextColor="#777" />
+                        <Label Text="{Binding Post.CreatedAt, StringFormat='{0:MMM dd, yyyy HH:mm}'}"
+                               FontSize="12"
+                               TextColor="Gray" />
 
-            <!-- Created At -->
-            <Label Text="{Binding Post.CreatedAt, StringFormat='Published: {0:MMMM dd, yyyy HH:mm}'}"
-                   FontSize="13"
-                   TextColor="#999" />
+                        <Label Text="{Binding Post.Content}"
+                               FontSize="16"
+                               LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                </Frame>
 
-            <!-- Divider -->
-            <BoxView HeightRequest="1" Color="#ccc" Margin="0,10" />
-
-            <!-- Content -->
-            <Label Text="{Binding Post.Content}"
-                   FontSize="16"
-                   TextColor="#333"
-                   LineBreakMode="WordWrap" />
-
-            <!-- Comment Input -->
-            <Label Text="Add a comment:" FontAttributes="Bold" FontSize="14" TextColor="#444" />
-            <Editor Placeholder="Write your comment here..."
-                    AutoSize="TextChanges"
-                    Text="{Binding NewCommentText}"
-                    BackgroundColor="#fff"
-                    HeightRequest="100"
-                    Margin="0,5"
-                    TextColor="#222" />
-
-            <!-- Submit Button -->
-            <Button Text="Comment"
-                    Command="{Binding SubmitCommentCommand}"
-                    BackgroundColor="#4CAF50"
-                    TextColor="White"
-                    CornerRadius="10"
-                    HeightRequest="45"
-                    Margin="0,10,0,0" />
+                <!-- Comments Section -->
+                <Label Text="Comments"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       Margin="0,10,0,4" />
 
             <CollectionView ItemsSource="{Binding Comments}"
+                ItemTemplate="{StaticResource CommentTemplate}"
+                ItemsLayout="VerticalList"
                 SelectionMode="None"
-                Margin="10">
+                Margin="10" />
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dto:CommentResponseDto">
-                        <Frame Margin="0,5"
-                            Padding="10"
-                            CornerRadius="12"
-                            BackgroundColor="#ffffff"
-                            HasShadow="True">
+            <!-- Add Comment -->
+                <Frame Padding="10" CornerRadius="10" BorderColor="Gray">
+                    <VerticalStackLayout Spacing="8">
+                        <Entry Placeholder="Write a comment..."
+                               Text="{Binding NewCommentText}" />
+                        <Button Text="Submit"
+                                Command="{Binding SubmitCommentCommand}" />
+                    </VerticalStackLayout>
+                </Frame>
 
-                            <VerticalStackLayout Spacing="5">
-                                <Label Text="{Binding Username}" FontSize="14" TextColor="#666" />
-                                <Label Text="{Binding Content}" FontSize="18" FontAttributes="Bold" TextColor="#333" />
-                                <Label Text="{Binding CreatedAt, StringFormat='Created: {0:MMM dd, yyyy}'}" FontSize="12" TextColor="#aaa" />
-                            </VerticalStackLayout>
-                        </Frame>
-
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-        </VerticalStackLayout>
-    </ScrollView>
+            </VerticalStackLayout>
+        </ScrollView>
 
 </ContentPage>

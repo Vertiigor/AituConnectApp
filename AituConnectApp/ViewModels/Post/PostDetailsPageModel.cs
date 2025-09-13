@@ -19,6 +19,9 @@ namespace AituConnectApp.ViewModels
         [ObservableProperty]
         public string newCommentText;
 
+        [ObservableProperty]
+        private string replyToCommentId;
+
         private readonly IPostApiService _postApiService;
         private readonly ICommentApiService _commentApiService;
 
@@ -57,6 +60,42 @@ namespace AituConnectApp.ViewModels
                 await Shell.Current.DisplayAlert("Error", "Something went wrong...", "OK");
             }
         }
+
+
+        [RelayCommand]
+        private async Task Reply(string commentId)
+        {
+            // Save the commentId so we know which comment the reply is for
+            ReplyToCommentId = commentId;
+
+            // Show input dialog or reuse your existing Entry
+            string replyText = await Shell.Current.DisplayPromptAsync("Reply", "Write your reply:");
+
+            if (string.IsNullOrWhiteSpace(replyText))
+                return;
+
+            var dto = new CreateCommentRequestDto
+            {
+                PostId = Post.Id,
+                Content = replyText,
+                ParentCommentId = ReplyToCommentId // you need this property in your API
+            };
+
+            bool success = await _commentApiService.CreateAsync(dto);
+
+            if (success)
+            {
+#if DEBUG
+                await Shell.Current.DisplayAlert("Success", "Reply created!", "ОК");
+#endif
+                await Shell.Current.GoToAsync($"///postdetails?id={Post.Id}");
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Error", "Something went wrong...", "OK");
+            }
+        }
+
         public async void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query.TryGetValue("id", out var id))

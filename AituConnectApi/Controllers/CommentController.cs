@@ -39,6 +39,7 @@ namespace AituConnectApi.Controllers
                 Id = Guid.NewGuid().ToString(),
                 PostId = dto.PostId,
                 UserId = userId,
+                ParentId = dto.ParentCommentId,
                 Content = dto.Content,
                 CreatedAt = DateTime.UtcNow
             };
