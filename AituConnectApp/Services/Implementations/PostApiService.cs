@@ -39,7 +39,7 @@ namespace AituConnectApp.Services.Implementations
                     PropertyNameCaseInsensitive = true
                 }) ?? new List<PostDetailsResponseDto>();
             }
-            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound || response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 // No posts for this university → return empty list instead of crashing
                 return new List<PostDetailsResponseDto>();

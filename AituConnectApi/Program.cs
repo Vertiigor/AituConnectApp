@@ -19,6 +19,7 @@ namespace AituConnectApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
             builder.AddServiceDefaults();
 
             builder.Services.AddDbContext<ApplicationContext>(options =>
