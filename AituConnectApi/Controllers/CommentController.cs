@@ -1,6 +1,7 @@
 ﻿using AituConnectApi.Dto.Requests;
 using AituConnectApi.Extensions;
 using AituConnectApi.Models;
+using AituConnectApi.Producers.Abstractions;
 using AituConnectApi.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,16 @@ namespace AituConnectApi.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;
+        private readonly IPostService _postService;
+        private readonly IMessageProducer _producer;
+        private readonly IUserService _userService;
 
-        public CommentController(ICommentService commentService)
+        public CommentController(ICommentService commentService, IPostService postService, IMessageProducer producer, IUserService userService)
         {
             _commentService = commentService;
+            _postService = postService;
+            _producer = producer;
+            _userService = userService;
         }
 
         [HttpPost("add")]
@@ -28,11 +35,16 @@ namespace AituConnectApi.Controllers
             }
 
             var userId = this.GetUserId();
+            var user = await _userService.GetByIdAsync(userId);
+            var username = user?.UserName;
 
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized("User not authenticated.");
             }
+
+            var post = await _postService.GetByIdAsync(dto.PostId);
+            var postOwner = post?.User;
 
             var comment = new Comment
             {
@@ -43,6 +55,27 @@ namespace AituConnectApi.Controllers
                 Content = dto.Content,
                 CreatedAt = DateTime.UtcNow
             };
+
+            if (postOwner != null)
+            {
+                var payload = new Contracts.CreateCommentContract
+                {
+                    CommentId = comment.Id,
+                    UserId = userId,
+                    PostId = dto.PostId,
+                    Content = dto.Content,
+                    OwnerEmail = postOwner.Email,
+                    UserName = username ?? "Unknown",
+                    CreatedAt = comment.CreatedAt
+                };
+
+                await _producer.PublishMessageAsync(
+                    eventType: "CreatedComment",
+                    payload: payload,
+                    exchange: "aituConnect.exchange",
+                    routingKey: "comments.created"
+                );
+            }
 
             await _commentService.AddAsync(comment);
 
@@ -57,14 +90,14 @@ namespace AituConnectApi.Controllers
             {
                 return BadRequest("Invalid reply data.");
             }
-            
+
             var userId = this.GetUserId();
-            
+
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized("User not authenticated.");
             }
-            
+
             var reply = new Comment
             {
                 Id = Guid.NewGuid().ToString(),
@@ -74,9 +107,9 @@ namespace AituConnectApi.Controllers
                 Content = dto.Content,
                 CreatedAt = DateTime.UtcNow
             };
-            
+
             await _commentService.AddAsync(reply);
-            
+
             return Ok();
         }
     }

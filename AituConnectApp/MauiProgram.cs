@@ -6,10 +6,10 @@ using AituConnectApp.Services.Abstractions;
 using AituConnectApp.Services.Implementations;
 using AituConnectApp.Settings.Api.AituConnect;
 using AituConnectApp.ViewModels;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
-using CommunityToolkit.Maui;
 
 namespace AituConnectApp
 {

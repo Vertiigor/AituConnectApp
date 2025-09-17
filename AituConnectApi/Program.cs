@@ -1,10 +1,15 @@
+using AituConnectApi.Connections.RabbitMq;
 using AituConnectApi.Connections.Redis;
 using AituConnectApi.Data;
+using AituConnectApi.Extentions;
 using AituConnectApi.Models;
+using AituConnectApi.Producers.Abstractions;
+using AituConnectApi.Producers.Implementations;
 using AituConnectApi.Repositories.Abstractions;
 using AituConnectApi.Repositories.Implementations;
 using AituConnectApi.Services.Abstractions;
 using AituConnectApi.Services.Implementations;
+using AituConnectApi.Settings.RabbitMq;
 using AituConnectApi.Settings.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -66,7 +71,9 @@ namespace AituConnectApi
             });
 
             builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("Redis"));
+            builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMq"));
             builder.Services.AddSingleton<IRedisConnection, RedisConnection>();
+            builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 
             builder.Services.AddAuthorization();
 
@@ -88,6 +95,8 @@ namespace AituConnectApi
             builder.Services.AddScoped<ICommentService, CommentService>();
 
             builder.Services.AddScoped<ICacheService, CacheService>();
+
+            builder.Services.AddTransient<IMessageProducer, Producer>();
 
             builder.Services.AddControllers();
 
@@ -130,6 +139,7 @@ namespace AituConnectApi
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.ApplyMigrations();
             }
 
             app.UseHttpsRedirection();

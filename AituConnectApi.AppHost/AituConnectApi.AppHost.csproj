@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AituConnectApi\AituConnectApi.csproj" />
+    <ProjectReference Include="..\NotificationService\NotificationService.csproj" />
   </ItemGroup>
 
 </Project>
