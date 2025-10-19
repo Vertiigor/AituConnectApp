@@ -62,7 +62,9 @@ namespace AituConnectApi.Controllers
 
             if (user == null)
             {
-                return Unauthorized("Invalid refresh token.");
+                Console.WriteLine("Refresh token has been expired.");
+
+                return Ok(await GenerateNewRefreshToken(tokenDto.AccessToken));
             }
 
             var userId = this.GetUserIdFromExpiredToken(_tokenService, tokenDto.AccessToken);
@@ -191,6 +193,18 @@ namespace AituConnectApi.Controllers
             await _userService.DeleteAsync(id);
 
             return NoContent();
+        }
+
+        private async Task<TokenRequestDto> GenerateNewRefreshToken(string accessToken)
+        {
+            var userId = this.GetUserIdFromExpiredToken(_tokenService, accessToken);
+            var user = await _userService.GetByIdAsync(userId);
+
+            var newTokens = await _tokenService.GenerateTokens(user);
+
+            user.RefreshToken = newTokens.RefreshToken;
+
+            return newTokens;
         }
 
         private string ComputeSha256Hash(string rawData)

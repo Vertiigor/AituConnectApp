@@ -1,5 +1,8 @@
-﻿namespace NotificationService.Contracts
+﻿using MassTransit;
+
+namespace NotificationService.Contracts
 {
+    [ExcludeFromTopology]
     public interface IMessagePayload
     {
         DateTime Timestamp { get; }

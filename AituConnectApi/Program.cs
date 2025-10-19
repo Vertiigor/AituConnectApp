@@ -1,5 +1,6 @@
 using AituConnectApi.Connections.RabbitMq;
 using AituConnectApi.Connections.Redis;
+using AituConnectApi.Contracts;
 using AituConnectApi.Data;
 using AituConnectApi.Extentions;
 using AituConnectApi.Models;
@@ -11,10 +12,12 @@ using AituConnectApi.Services.Abstractions;
 using AituConnectApi.Services.Implementations;
 using AituConnectApi.Settings.RabbitMq;
 using AituConnectApi.Settings.Redis;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using RabbitMQ.Client;
 using System.Text;
 
 namespace AituConnectApi
@@ -70,6 +73,31 @@ namespace AituConnectApi
                 };
             });
 
+            builder.Services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    var section = builder.Configuration.GetSection("RabbitMq");
+
+                    cfg.Host(section["Host"], h =>
+                    {
+                        h.Username(section["Username"]);
+                        h.Password(section["Password"]);
+                    });
+
+                    // Use a fixed exchange name for this message type
+                    cfg.Message<CreateCommentContract>(m =>
+                    {
+                        m.SetEntityName("create-comment"); // <— custom exchange name
+                    });
+
+                    cfg.Publish<CreateCommentContract>(m =>
+                    {
+                        m.ExchangeType = ExchangeType.Fanout;
+                    });
+                });
+            });
+
             builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("Redis"));
             builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMq"));
             builder.Services.AddSingleton<IRedisConnection, RedisConnection>();
@@ -96,7 +124,7 @@ namespace AituConnectApi
 
             builder.Services.AddScoped<ICacheService, CacheService>();
 
-            builder.Services.AddTransient<IMessageProducer, Producer>();
+            builder.Services.AddScoped<IMessageProducer, MessageProducer>();
 
             builder.Services.AddControllers();
 

@@ -69,12 +69,7 @@ namespace AituConnectApi.Controllers
                     CreatedAt = comment.CreatedAt
                 };
 
-                await _producer.PublishMessageAsync(
-                    eventType: "CreatedComment",
-                    payload: payload,
-                    exchange: "aituConnect.exchange",
-                    routingKey: "comments.created"
-                );
+                await _producer.PublishAsync(payload);
             }
 
             await _commentService.AddAsync(comment);
