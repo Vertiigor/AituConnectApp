@@ -1,4 +1,4 @@
-﻿using AituConnectApi.Contracts;
+﻿using Contracts;
 
 namespace AituConnectApi.Producers.Abstractions
 {

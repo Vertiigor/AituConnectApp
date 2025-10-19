@@ -1,6 +1,4 @@
-using AituConnectApi.Connections.RabbitMq;
 using AituConnectApi.Connections.Redis;
-using AituConnectApi.Contracts;
 using AituConnectApi.Data;
 using AituConnectApi.Extentions;
 using AituConnectApi.Models;
@@ -10,14 +8,12 @@ using AituConnectApi.Repositories.Abstractions;
 using AituConnectApi.Repositories.Implementations;
 using AituConnectApi.Services.Abstractions;
 using AituConnectApi.Services.Implementations;
-using AituConnectApi.Settings.RabbitMq;
 using AituConnectApi.Settings.Redis;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using RabbitMQ.Client;
 using System.Text;
 
 namespace AituConnectApi
@@ -33,8 +29,7 @@ namespace AituConnectApi
             builder.Services.AddDbContext<ApplicationContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseContext") ?? throw new InvalidOperationException("Connection string 'BookStoreContext' not found.")));
 
-            // Add services to the container.
-
+            // Add services to the container
 
             // Configure Identity to use the custom ApplicationUser model
             builder.Services.AddIdentity<User, IdentityRole>()
@@ -84,24 +79,11 @@ namespace AituConnectApi
                         h.Username(section["Username"]);
                         h.Password(section["Password"]);
                     });
-
-                    // Use a fixed exchange name for this message type
-                    cfg.Message<CreateCommentContract>(m =>
-                    {
-                        m.SetEntityName("create-comment"); // <— custom exchange name
-                    });
-
-                    cfg.Publish<CreateCommentContract>(m =>
-                    {
-                        m.ExchangeType = ExchangeType.Fanout;
-                    });
                 });
             });
 
             builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("Redis"));
-            builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMq"));
             builder.Services.AddSingleton<IRedisConnection, RedisConnection>();
-            builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 
             builder.Services.AddAuthorization();
 

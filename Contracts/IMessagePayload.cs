@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace NotificationService.Contracts
+namespace Contracts
 {
     [ExcludeFromTopology]
     public interface IMessagePayload

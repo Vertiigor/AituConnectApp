@@ -1,5 +1,5 @@
-﻿using AituConnectApi.Contracts;
-using AituConnectApi.Producers.Abstractions;
+﻿using AituConnectApi.Producers.Abstractions;
+using Contracts;
 using MassTransit;
 
 namespace AituConnectApi.Producers.Implementations

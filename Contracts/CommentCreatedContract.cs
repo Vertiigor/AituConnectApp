@@ -1,6 +1,6 @@
-﻿namespace NotificationService.Contracts
+﻿namespace Contracts
 {
-    public class CreateCommentContract : IMessagePayload
+    public class CommentCreatedContract : IMessagePayload
     {
         public DateTime Timestamp { get; } = DateTime.UtcNow;
         public string CommentId { get; set; } = default!;

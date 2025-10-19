@@ -58,7 +58,7 @@ namespace AituConnectApi.Controllers
 
             if (postOwner != null)
             {
-                var payload = new Contracts.CreateCommentContract
+                var payload = new Contracts.CommentCreatedContract
                 {
                     CommentId = comment.Id,
                     UserId = userId,

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AituConnectApi.ServiceDefaults\AituConnectApi.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Contracts\Contracts.csproj" />
   </ItemGroup>
 
 </Project>
